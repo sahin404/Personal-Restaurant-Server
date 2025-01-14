@@ -27,12 +27,19 @@ async function run() {
     await client.connect();
 
     const menuCollection = client.db('pizzarant').collection('menu');
+    const cartCollection = client.db('pizzarant').collection('carts');
+
 
     app.get('/menu', async(req,res)=>{
         const result = await menuCollection.find().toArray();
         res.send(result);
     })
 
+    app.post('/carts', async(req,res)=>{
+      const data = req.body;
+      const result = await cartCollection.insertOne(data);
+      res.send(result);
+    })
 
 
 
