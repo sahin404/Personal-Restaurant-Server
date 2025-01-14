@@ -30,6 +30,12 @@ async function run() {
     const cartCollection = client.db('pizzarant').collection('carts');
 
 
+    app.get('/carts', async(req,res)=>{
+      const email = req.query.email;
+      const query = {userEmail: email};
+      const result = await cartCollection.find(query).toArray();
+      res.send(result);
+    })
     app.get('/menu', async(req,res)=>{
         const result = await menuCollection.find().toArray();
         res.send(result);
