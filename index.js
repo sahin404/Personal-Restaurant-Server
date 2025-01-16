@@ -9,7 +9,7 @@ app.use(express.json());
 require('dotenv').config();
 
 
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@cluster0.vm21m.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`;
 
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
@@ -47,6 +47,12 @@ async function run() {
       res.send(result);
     })
 
+    app.delete('/carts/:id', async(req,res)=>{
+      const id = req.params.id;
+      const query = {_id: new ObjectId(id)};
+      const result = cartCollection.deleteOne(query);
+      res.send(result);
+    })
 
 
 
