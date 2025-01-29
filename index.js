@@ -28,8 +28,32 @@ async function run() {
 
     const menuCollection = client.db('pizzarant').collection('menu');
     const cartCollection = client.db('pizzarant').collection('carts');
+    const usersCollection = client.db('pizzarant').collection('users');
 
 
+    // User Related API
+
+    app.get('/users', async(req,res)=>{
+      const result = await usersCollection.find().toArray();
+      res.send(result);
+    })
+
+    app.post('/users', async(req,res)=>{
+      const userInfo = req.body;
+      const result  = await usersCollection.insertOne(userInfo);
+      res.send(result);
+    })
+
+
+    app.delete('/users/:id', async(req,res)=>{
+      const id = req.params.id;
+      const query = {_id: new ObjectId(id)};
+      const result = await usersCollection.deleteOne(query);
+      res.send(result);
+    })
+
+
+    //Menu and Carts related API
     app.get('/carts', async(req,res)=>{
       const email = req.query.email;
       const query = {userEmail: email};
